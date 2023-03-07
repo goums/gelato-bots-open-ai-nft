@@ -71,7 +71,7 @@ function generateNftProperties(seed: string) {
 }
 
 Web3Function.onRun(async (context: Web3FunctionContext) => {
-  const { userArgs, gelatoArgs, storage, secrets, provider } = context;
+  const { userArgs, storage, secrets, provider } = context;
 
   const nftAddress = userArgs.nftAddress;
   if (!nftAddress) throw new Error("Missing userArgs.nftAddress");
@@ -79,7 +79,7 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
 
   const currentBlock = await provider.getBlockNumber();
   const lastBlockStr = await storage.get("lastBlockNumber");
-  const lastBlock = lastBlockStr ? parseInt(lastBlockStr) : currentBlock - 500;
+  const lastBlock = lastBlockStr ? parseInt(lastBlockStr) : (userArgs.genesisBlock as number);
   console.log(`Last processed block: ${lastBlock}`);
 
   // Retrieve new mint event
@@ -110,7 +110,7 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
       size: "512x512",
     });
     imageUrl = response.data.data[0].url as string;
-    console.log(`Dall-e generated image: ${imageUrl}`);
+    console.log(`Open AI generated image: ${imageUrl}`);
   } catch (_err) {
     const openAiError = _err as AxiosError;
     const errrorMessage = openAiError.response
@@ -134,16 +134,6 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
   });
   console.log("IPFS URL for the metadata:", metadata.url);
 
-  // Refreshing NFT metadata on open sea
-  try {
-    const openSeaUrl = `https://${
-      gelatoArgs.chainId === 5 ? "testnets-api" : "api"
-    }.opensea.io/api/v1/asset/${nftAddress}/${tokenId}/?force_update=true`;
-    console.log("Refreshing OpenSea Nft:", openSeaUrl);
-    await axios.get(openSeaUrl);
-  } catch (err) {
-    console.error(`Error fetching OpenSea API: ${(err as Error).message}`);
-  }
   await storage.set("lastBlockNumber", lastProcessedBlock.toString());
   return {
     canExec: true,

@@ -20,8 +20,13 @@ async function main() {
   const nftFactory = await hre.ethers.getContractFactory("GelatoBotNft");
   console.log("Deploying GelatoBotNft...");
   const gelatoBotNft = await nftFactory.deploy(dedicatedMsgSender.address);
-  await gelatoBotNft.deployed();
+  const { deployTransaction } = await gelatoBotNft.deployed();
+  const genesisBlock = deployTransaction.blockNumber as number;
+
+  //const gelatoBotNft = await nftFactory.attach("0x83503675b4dC70321DB99b62170507434C4D3d06");
+  //const genesisBlock = 8550000;
   console.log(`GelatoBotNft deployed to: ${gelatoBotNft.address}`);
+  console.log(`GelatoBotNft genesisBlock: ${genesisBlock}`);
 
   // Deploy Web3Function on IPFS
   console.log("Deploying Web3Function on IPFS...");
@@ -42,10 +47,10 @@ async function main() {
     execAddress: gelatoBotNft.address,
     execSelector: gelatoBotNft.interface.getSighash("revealNft(uint256 tokenId, string memory tokenURI)"),
     execAbi: gelatoBotNft.interface.format("json") as string,
-    name: "Gelato Bot NFT Generator",
+    name: "Gelato Bot NFT Generator v0.2",
     dedicatedMsgSender: true,
     web3FunctionHash: cid,
-    web3FunctionArgs: { nftAddress: gelatoBotNft.address },
+    web3FunctionArgs: { nftAddress: gelatoBotNft.address, genesisBlock },
   });
   await tx.wait();
   console.log(`Task created, taskId: ${taskId} (tx hash: ${tx.hash})`);
