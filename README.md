@@ -14,6 +14,11 @@ NFT powered by Open AI & Web3 functions:
  - Open Sea NFTs: https://testnets.opensea.io/collection/gelato-bots
  - LooksRare NFT collection: https://goerli.looksrare.org/collections/0x83503675b4dC70321DB99b62170507434C4D3d06
 
+- Polygon:
+ - Smart Contract: https://polygonscan.com/address/0x179c72ebca26b4e46ad7d570a1304a12462d9564
+ - Web3 Function: https://beta.app.gelato.network/task/0x8764846bdf3c7b118f0faf77f027c2b99785fd74d572c6218673150c026580c4?chainId=137
+ - Open Sea NFTs: https://opensea.io/collection/gelato-bots
+
 ## How to run
 
 1. Install project dependencies:
@@ -38,5 +43,5 @@ yarn run deploy --network goerli
 
 ## Verify
 ```
-npx hardhat verify CONTRACT_ADDRESS DEDICATED_MSG_SENDER
+npx hardhat verify CONTRACT_ADDRESS DEDICATED_MSG_SENDER --network goerli
 ```

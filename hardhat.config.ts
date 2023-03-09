@@ -33,7 +33,7 @@ const config: HardhatUserConfig = {
     polygon: {
       chainId: 137,
       accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
-      url: `https://goerli.optimism.io`,
+      url: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_ID}`,
     },
   },
 
