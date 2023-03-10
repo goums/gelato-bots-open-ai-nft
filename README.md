@@ -30,6 +30,7 @@ yarn install
 ```
 cp .env.example .env
 ```
+You will need to create free accounts and get Api Keys from [OpenAI](https://platform.openai.com/) and [Nft.Storage](https://nft.storage/)
 
 3. Test the Open AI NFT web3 function on goerli:
 ```
