@@ -16,7 +16,7 @@ NFT powered by Open AI & Web3 functions:
 
 - Polygon:
   - Smart Contract: https://polygonscan.com/address/0x179c72ebca26b4e46ad7d570a1304a12462d9564
-  - Web3 Function: https://beta.app.gelato.network/task/0x0d677aa1851767bdec05a007908d88134ebf7fd07db5da4b0143af940c9938dd?chainId=137
+  - Web3 Function: https://beta.app.gelato.network/task/0x2dc6aed9ad087c0a092420da8813757fab3d16352b0587bf3179fc4eeb100a36?chainId=137
   - Open Sea NFTs: https://opensea.io/collection/gelato-bots
 
 ## How to run

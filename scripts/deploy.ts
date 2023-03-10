@@ -53,7 +53,7 @@ async function main() {
     execAddress: gelatoBotNft.address,
     execSelector: gelatoBotNft.interface.getSighash("revealNft(uint256 tokenId, string memory tokenURI)"),
     execAbi: gelatoBotNft.interface.format("json") as string,
-    name: "Gelato Bot NFT Generator v1.0",
+    name: "Gelato Bot NFT Generator v1.2",
     dedicatedMsgSender: true,
     web3FunctionHash: cid,
     web3FunctionArgs: { nftAddress: gelatoBotNft.address, genesisBlock },
