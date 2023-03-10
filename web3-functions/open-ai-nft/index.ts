@@ -56,7 +56,7 @@ function generateNftProperties(seed: string) {
   const chance = new Chance(seed);
   const place = chance.weighted(["big city", "beach marina", "ski resort"], [60, 20, 20]);
   const outfit = chance.weighted(["none", "golden crown"], [80, 20]);
-  const accessory = chance.weighted(["laptop", "smartphone"], [50, 50]);
+  const accessory = chance.weighted(["smartphone", "laptop"], [80, 20]);
   const description = `A cute robot${
     outfit !== "none" ? `, wearing a ${outfit}` : ""
   }, eating a gelato and holding a ${accessory}, with a ${place} background, at sunset, in a cyberpunk art, 3D, video game, and pastel salmon colors`;
@@ -133,7 +133,7 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
     attributes: nftProps.attributes,
     collection: { name: "GelatoBots", family: "gelatobots" },
   });
-  console.log("IPFS URL for the metadata:", metadata.url);
+  console.log("IPFS Metadata:", metadata.url);
 
   await storage.set("lastBlockNumber", lastProcessedBlock.toString());
   return {
