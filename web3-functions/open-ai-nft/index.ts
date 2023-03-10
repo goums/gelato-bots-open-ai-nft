@@ -11,7 +11,9 @@ const MAX_REQUESTS = 10;
 const NFT_ABI = [
   "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)",
   "function revealNft(uint256 tokenId, string memory tokenURI) external",
+  "function tokenURI(uint256 tokenId) public view returns (string memory) ",
 ];
+const NOT_REVEALED_URI = "ipfs://bafyreicwi7sbomz7lu5jozgeghclhptilbvvltpxt3hbpyazz5zxvqh62m/metadata.json";
 
 async function lookUpkMintEvent(
   lastBlock: number,
@@ -24,7 +26,7 @@ async function lookUpkMintEvent(
   // Fetch historical events in batch without exceeding runtime limits
   while (lastBlock < currentBlock && nbRequests < MAX_REQUESTS) {
     nbRequests++;
-    const fromBlock = lastBlock + 1;
+    const fromBlock = lastBlock;
     const toBlock = Math.min(fromBlock + MAX_RANGE, currentBlock);
     try {
       console.log(`Fetching log events from blocks ${fromBlock} to ${toBlock}`);
@@ -35,6 +37,12 @@ async function lookUpkMintEvent(
         const [from, to, tokenId] = transferEvent.args;
         // Look up for Mint event (= Transfer event to address zero)
         if (from === constants.AddressZero) {
+          // Check if NFT is already revelead
+          const tokenURI = await nft.tokenURI(tokenId);
+          if (tokenURI !== NOT_REVEALED_URI) {
+            console.log(`#${tokenId} already minted!`);
+            continue;
+          }
           console.log(`New mint: #${tokenId} to ${to}`);
           return {
             mintEvent: transferEvent,
@@ -49,7 +57,7 @@ async function lookUpkMintEvent(
       return { lastProcessedBlock: fromBlock };
     }
   }
-  return { lastProcessedBlock: currentBlock };
+  return { lastProcessedBlock: lastBlock };
 }
 
 function generateNftProperties(seed: string) {
